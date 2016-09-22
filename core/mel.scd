@@ -9,9 +9,7 @@
 
 "utils.scd".loadRelative;
 
-Pdefn(\scale, [0,2,4]);
-Pdefn(\mode, Scale.major);
-
+Pdefn(\base, 0);
 // pdefs list
 // remove and redef for clean
 "sortie,_appo,_triade,_p,periode".split($,)
@@ -23,15 +21,15 @@ Pdef(\sortie, Pbind(\type, \midi, \midiout, MIDIOut(0)));
 Pdef(\_appo, { arg sortieFinale=\sortie,
 	degree, note, dur,decoupe,
 	seedH,seedR,
-	reso=8
+	reso=8, chan
 	//	chan=Pdefn(\chan);
 	;
 	Pbind(
 		\type, \phrase, \instrument, sortieFinale,
 		\degree, note.value,
 		//		\chan, 
-		\mtranspose, Pseed(seedH, Pseq([Prand([-1,-2,2,1], decoupe), 0])),
-		\scale, Pdefn(\mode),
+		\mtranspose, Pseed(seedH, Pseq([Prand((-2..2), decoupe), 0])),
+		\scale, Pdefn(\mode).collect(Scale.at(_)),
 		\stepsPerOctave, 12,
 		\dur, dur * (Pseed(seedR, Plazy{reso.partition((decoupe+1)).iter})/reso)
 	)
@@ -42,7 +40,6 @@ Pdef(\_triade, { arg dur, chan=0, base=0,
 	seedR, seedH,
 	finale,
 	degree, note, lag;
-	MIDIOut(0).allNotesOff(chan);
 	Pseq([
 		Rest(dur*lag),
 		Pbind(
@@ -73,7 +70,7 @@ Pdef(\_triade, { arg dur, chan=0, base=0,
 Pdef(\_p,
 	{ arg seedR="aaba", seedH="cdef",
 		squelette="1020",
-		dur=8, degree=0, base=3, reso="4682";
+		dur=8, degree=0, base=Pdefn(\base), reso="4682";
 		var nb=max(seedR.size, seedH.size);
 		Pbind(
 			\type, \phrase, \instrument, \_triade,

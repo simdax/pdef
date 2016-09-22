@@ -1,5 +1,5 @@
 (Pdef( \mode,
-	Pbind(
+ 	Pbind(
 		\mode, [0,1].pseq(inf)
 		.collect{arg x;
 			Scale.major.degrees
