@@ -13,12 +13,13 @@
 	w
 };
 
-~dispatch={arg name, parent, chans, durs, template=\periode;
+~dispatch={arg name, parent, template=\_periode, chans=0, durs=4;
 	var dictChan;
 	var n=(name).asSymbol;
 	var sortie=("_"++name++"sortie").asSymbol;
-	template.switch(
-		\periode,{Pdef(template).copy(n).set(\sortieFinale, sortie)},
+	var bobi;
+	template.postln.switch(
+		\_periode,{Pdef(template).copy(n).set(\sortieFinale, sortie)},
 		{Pdef(template).copy(n).set(\instrument, sortie)}
 	).quant_(16);
 	Pdefn(sortie, {arg in;
