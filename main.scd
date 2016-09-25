@@ -8,7 +8,7 @@ Pdef.removeAll;
 Pdefn.removeAll;
 Window.closeAll;
 
-orig = Window.screenBounds.extent * (3/4); size=280@700;
+orig = Window.screenBounds.extent * (3/4); size=1000@800;
 
 a.collect(_++".scd").do(_.loadRelative);
 w=FlowView(nil,size.asRect.postln.origin_(orig)).front;
@@ -22,12 +22,13 @@ EZSlider(w,250@20,"tempo",[0.1,9,\exp,0.1,1])
 PdefnAllGui(8,parent:w,bounds:260@200).filtering_(true);
 PdefGui(Pdef(\_accords),0,w);
 
-MIDICTL();
-defer{w.parent.alwaysOnTop_(true)};
-MIDICTL.window.alwaysOnTop_(true);
+MIDICTL(w);
+//defer{w.parent.alwaysOnTop_(true)};
+//MIDICTL.window.alwaysOnTop_(true);
 CmdPeriod.add({Zyn.panic});
 
 
 // GROSSSSSE GUI
-"core/newVoice.scd".loadRelative
+"core/newVoice.scd".loadRelative;
+~nV.(w)
 )
