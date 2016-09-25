@@ -16,9 +16,9 @@ Pdefn(\base, 0);
 .do{arg x; Pdef(x.asSymbol).remove};
 
 
-Pdef(\sortie, Pbind(\type, \midi, \midiout, MIDIOut(0)));
+Pdef(\_sortie, Pbind(\type, \midi, \midiout, MIDIOut(0)));
 
-Pdef(\_appo, { arg sortieFinale=\sortie,
+Pdef(\_appo, { arg sortieFinale=\_sortie,
 	degree, note, dur,decoupe,
 	seedH,seedR,
 	reso=8, chan
@@ -59,9 +59,12 @@ Pdef(\_triade, { arg dur, chan=0, base=0,
 		Pbind(
 			\type, \phrase, \instrument, sortieFinale,
 			\hasGate, false,
-			\degree, degree,
+			\degree, PdegreeToKey(
+				degree,
+				Pdefn(\scale).source,
+			),
 			\legato, 0.5,
-			\scale,	Pdefn(\scale).degreeToKey(Scale.major),
+			\scale, Pdefn(\mode).collect(Scale.at(_)),
 			\stepsPerOctave, 12, 
 		) 
 	]) 
@@ -85,20 +88,22 @@ Pdef(\_p,
 	}
 ).quant_(8);
 
-Pdef(\periode,
+Pdef(\_periode,
 	Pbind(
 		\type, \phrase, \instrument, \_p, \legato, 1,
 	) <> ~master.repeat
 )
 .envir_((
-	squelette:["0123","3456"],
+	squelette:Array.rand(4,0,6).collect(_.asString),
 	reso:["224","8"],
 	dur: [16],
 	seedH:["aaba"],
 	seedR:["abac"],
-	sortieFinale:\sortie,
+	sortieFinale:\_sortie,
 ))
 .quant_(16);
 
 
 )
+
+
