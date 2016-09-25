@@ -1,7 +1,5 @@
 (
 
-
-
 Pdefn(\basse, \tourn);
 Pdefn(\scale, [0,2,4]);
 Pdefn(\mode, \major);
@@ -37,20 +35,28 @@ Pdef(\_accords,
 // s'occupe d'arpéger les accords
 Pdef(\_arp,	
 	Pbind(
-		\type, \phrase,
-		\degree, [0,1,2,1].pseq(inf),
-		\mtranspose, [0, 0,[0,1],0].pseq(inf),
-		\octave, 5+[-1,1,-1,1].iter.repeat,
+  		\type, \phrase,
+		// \degree, degree.pseq(inf),
+		// \mtranspose, mtranspose.pseq(inf),
+		// \octave, octave.pseq(inf)+5,
 		\scale, PdegreeToKey(
 			Pdefn(\scale),
 			Pdefn(\mode).collect(Scale.at(_))
 		),
-		\dur, 8.reciprocal,
-	).trace
-).quant_(16);
+	) <> ~master.repeat
+).quant_(16)
+.envir_(
+	(
+		degree: [0,1,2,1],
+		mtranspose: [2,0,[0,1],0],
+		octave: [-1,1,-1,1],
+		dur: [0.5]
+	)
+);
 
 
 )
+
 
 
 
