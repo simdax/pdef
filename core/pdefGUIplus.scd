@@ -1,15 +1,14 @@
-
 a=Pbind()<>
 
 a=Pbind(*(a:Pseq([0])).asPairs)
 a.trace.play
 
 (
+Window.closeAll;
 Pdefn.removeAll;
 Pdef.removeAll;
 
 Pdef(\bob, Plazy{ arg in;
-	in.postln;
 	Pbind(*in.asPairs)
 })
 .envir_((
@@ -17,24 +16,27 @@ Pdef(\bob, Plazy{ arg in;
 ));
 e=Pdef(\bob).envir;
 e.pairsDo{arg k,v; 
-	Pdefn(("arp"++k).asSymbol, v.postln).postln
+	Pdefn(("arp"++k).asSymbol, v)
 };
-z=(e.keys.as(Array) +++ (e.keys.collectAs({arg w;("arp"++w).asSymbol}, Array).collect(_.asRef)))
+z=(e.keys.as(Array) +++
+	(
+		e.keys
+		.collect{arg w;("arp"++w).asSymbol.asRef}
+	))
 .collect{arg x; [x[0], x[1].value]}
 .flatten
 ;
-z.postln;
-Pdef(\bob).map(*z); 
-PdefnAllGui().filtering_(true).prefix_("arp");
+
+Pdef(\bob).map(*z);
+
+//w=FlowView();
+a=
+{arg p;
+	var a=PdefnAllGui(parent:p).filtering_(true).prefix_("arp");
+	a.filtBut.remove;a.filTextV.remove;a
+};
+
+b=PdefGui( Pdef(\bob), numItems:16, options:a);
+
 Pdef(\bob).trace.play;
 )
-
-Pdefn("arpchien").source
-Pdefn(\prout).source
-
-Set[3]+++Set[9,3]
-
-Pdef.removeAll
-Pdefn(\degree).iter.next
-
-Pdef(\bob).envir
