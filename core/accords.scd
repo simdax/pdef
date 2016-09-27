@@ -27,7 +27,7 @@ Pdef(\_accords,
 			}.repeat,
 			\degree, Pchords(Pkey(\accord)).collect{arg x;Pdefn(\scale,x)},
 			\stretch, durH
-		).trace
+		)
 	}
 ).quant_([16, 0, 0]);
 
@@ -36,21 +36,16 @@ Pdef(\_accords,
 Pdef(\_arp,	
 	Pbind(
   		\type, \phrase,
-		// \degree, degree.pseq(inf),
-		// \mtranspose, mtranspose.pseq(inf),
-		// \octave, octave.pseq(inf)+5,
-		\scale, PdegreeToKey(
-			Pdefn(\scale),
-			Pdefn(\mode).collect(Scale.at(_))
-		),
+		\degree, PdegreeToKey(		Pkey(\degree), Pdefn(\scale), 7),
+		\scale, Pdefn(\mode).collect(Scale.at(_)),
 	) <> ~master.repeat
 ).quant_(16)
 .envir_(
 	(
 		degree: [0,1,2,1],
-		mtranspose: [2,0,[0,1],0],
-		octave: [-1,1,-1,1],
-		dur: [0.5]
+		mtranspose: [0],
+		octave: [0]+5,
+		dur: 0.5
 	)
 );
 

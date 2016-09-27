@@ -46,7 +46,7 @@ Pdef(\_triade, { arg dur, chan=0, base=0,
 			\type, \phrase,	\instrument, \_appo, \legato, 1,
 			\degree, degree,
 			\decoupe,  Pseed(seedH, Pseq([0, Prand([0,1,2],inf)])),
-			//\mtranspose, Pseq([0,1,2,1,0], inf),//Pseed(seedH, Pseq([0, Pwhite(-1, 1)])),
+			\mtranspose, Pseed(seedH, Pseq([0, Pwhite(-2, 2)])),
 			\dur, Pconst( dur*finale,
 				Pseed(seedR,// 1,
 					Pseq([Prand([2, [1,1].pseq]), 1,1], inf)
@@ -55,13 +55,13 @@ Pdef(\_triade, { arg dur, chan=0, base=0,
 			\scale, Pdefn(\scale),
 			\stepsPerOctave, 7
 		)//([\scale, \degree, \mtranspose, \note])
-		, Rest(0.005), // important
+		, Rest(0.005), // important ?
 		Pbind(
 			\type, \phrase, \instrument, sortieFinale,
 			\hasGate, false,
 			\degree, PdegreeToKey(
 				degree,
-				Pdefn(\scale).source,
+				Pdefn(\scale),
 			),
 			\legato, 0.5,
 			\scale, Pdefn(\mode).collect(Scale.at(_)),
@@ -94,8 +94,8 @@ Pdef(\_periode,
 	) <> ~master.repeat
 )
 .envir_((
-	squelette:Array.rand(4,0,6).collect(_.asString),
-	reso:["224","8"],
+	squelette:Array.rand(4,0,2).collect(_.asString),
+	reso:["1241"],
 	dur: [16],
 	seedH:["aaba"],
 	seedR:["abac"],
